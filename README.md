@@ -46,7 +46,10 @@ var token string = "IQoJb3Jpz2cXpQRkpVX3Uf////////////xMdLZHNjb<snip>"
 The folks over at [Thinkst Canary](https://canary.tools/) have a [wonderful tool](https://canarytokens.org/generate#) that allows you to easily generate AWS credentials that will generate an alert on usage.
 1. Visit [CanaryTokens](https://canarytokens.org/generate#)
 2. Select *AWS Keys*, enter an email for the alert to go to and a note for what the alert is for
-![Pasted image 20231124171011.png](./Pasted image 20231124171011.png)
+
+![Pasted image 20231124171011](https://github.com/grahamhelton/IMDSpoof/assets/19278569/2f141958-2cb2-4fda-849d-b5a16cd5b1c4)
+
+
 3. Note down the honeytoken provided 
 ```bash
 aws_access_key_id = AKIA....
