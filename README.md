@@ -1,7 +1,7 @@
 # IMDSPOOF
 IMDSPOOF is a cyber deception tool that spoofs an AWS IMDS service. One way that attackers are able to escalate privileges or move laterally in a cloud environment is by retrieving AWS Access keys from the [IMDS service](https://hackingthe.cloud/aws/exploitation/ec2-metadata-ssrf/) endpoint located at `http://169.254.169.254/latest/meta-data/iam/security-credentials/<user>`. This tool spoofs that endpoint and redirects traffic sent to `169.254.169.254` to a local webserver that serves fake data. This can be leveraged for highly tuned detections by inserting [honey AWS tokens]() (Insert Reference) into the response of the spoofed IMDS response.
 
-![IMDSPOOF.png](./IMDSPOOF.png)
+![IMDSPOOF](https://github.com/grahamhelton/IMDSpoof/assets/19278569/334b4cf0-1563-441a-8281-7c03a5acfd4f)
 
 # Who is this for?
 This tool is intended to be used by blue teams on AWS instances that are *NOT* actively using the IMDS (version 1 or 2). 
@@ -54,21 +54,21 @@ aws_secret_access_key = uZF0y/l5X....
 ```
 4. Within the IMDS.go source code, replace the `accessKey` and `secretAccessKey` variable's with the `aws_access_key_id` and `aws_secret_access_key` values given to you by CanaryTokens.
 
-![Pasted image 20231124171422.png](./Pasted image 20231124171422.png)
+![Pasted image 20231124171422](https://github.com/grahamhelton/IMDSpoof/assets/19278569/4740c850-8bad-4c5f-a682-d8bbe91924a5)
 
 5. Compile IMDS.go. IMDS will now return the honey tokens when the IMDS is queried. 
 
-![Pasted image 20231124172134.png](./Pasted image 20231124172134.png)
+![Pasted image 20231124172134](https://github.com/grahamhelton/IMDSpoof/assets/19278569/a8dcd1a0-7ae5-4e33-b39e-8d453aca4ae5)
+
 
 6. Wait for an attacker to attempt to use the credentials
 
-![Pasted image 20231124172935.png](./Pasted image 20231124172935.png)
-
-7. Email alert from Canary Token
-
-![Pasted image 20231124173123.png](./Pasted image 20231124173123.png)
+![Pasted image 20231124172935](https://github.com/grahamhelton/IMDSpoof/assets/19278569/096e510f-22d5-4b52-b32a-e4a5d849b110)
 
 
+8. Email alert from Canary Token
+
+![Pasted image 20231124173123](https://github.com/grahamhelton/IMDSpoof/assets/19278569/f2a17d6d-c835-48d2-9baa-a71c329dc5a6)
 
 
 # Run at startup 
@@ -113,7 +113,9 @@ WantedBy=multi-user.target
 - Ensure everything is running correctly with `sudo systemctl status IMDS`
 # Does this work with SSRF?
 Yes! Because of the way IMDSpoof manipulates the iptables on the ec2 instance, it doesn't matter where the traffic is coming from. This means that in addition to this working via the curl utilitiy on the EC2 instance, IMDSpoof also works if an SSRF vulnerability is found through a web application hosted on the EC2 instance. Using the following [vulnerable application from AlexanderHose's blog](https://alexanderhose.com/how-to-hack-aws-instances-with-the-metadata-service-enabled/) on IMDS pentesting, we can exploit the SSRF vulnerability which will also return the fake credentials from IMDSpoof
-![Image](./Pasted image 20231124180610.png)
+
+![Pasted image 20231124180610](https://github.com/grahamhelton/IMDSpoof/assets/19278569/dfb0c4c7-9eba-45a8-a155-72fabaece401)
+
 
 # Reverting
 - To stop the systemd service: `sudo systemctl stop IMDS`
